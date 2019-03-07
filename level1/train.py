@@ -29,7 +29,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
                 model.train(False)  # Set model to evaluate mode
 
             running_loss = 0.0
-            running_corrects = 0
+            running_corrects = 0.0
 
             # Iterate over data.
             for data in dataloders[phase]:
@@ -58,7 +58,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
 
                 # statistics
                 running_loss += loss.data[0]
-                running_corrects += torch.sum(preds == labels.data)
+                running_corrects += torch.sum(preds == labels.data).to(torch.float32)
 
             epoch_loss = running_loss / dataset_sizes[phase]
             epoch_acc = running_corrects / dataset_sizes[phase]

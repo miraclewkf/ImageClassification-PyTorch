@@ -55,12 +55,12 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, use_gpu):
 
     for epoch in range(num_epochs):
         begin_time = time.time()
-        count_batch = 0
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
         print('-' * 10)
 
         # Each epoch has a training and validation phase
         for phase in ['train', 'val']:
+	    count_batch = 0
             if phase == 'train':
                 scheduler.step()
                 model.train(True)  # Set model to training mode
@@ -68,7 +68,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, use_gpu):
                 model.train(False)  # Set model to evaluate mode
 
             running_loss = 0.0
-            running_corrects = 0
+            running_corrects = 0.0
 
             # Iterate over data.
             for data in dataloders[phase]:
@@ -97,7 +97,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, use_gpu):
                     optimizer.step()
                 # statistics
                 running_loss += loss.data[0]
-                running_corrects += torch.sum(preds == labels.data)
+                running_corrects += torch.sum(preds == labels.data).to(torch.float32)
 
                 # print result every 10 batch
                 if count_batch%10 == 0:
